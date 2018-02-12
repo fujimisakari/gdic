@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fujimisakari/docker-increment-cli/cmd"
+	"github.com/fujimisakari/gdic/cmd"
 )
 
 func main() {

@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/fujimisakari/docker-increment-cli/cli"
+	"github.com/fujimisakari/gdic/cli"
 )
 
 func removeImageCmd() *cobra.Command {

@@ -10,12 +10,12 @@ func removeImageCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "rmi",
 		Short: "Remove Docker Image",
-		Run:   removeImage,
+		RunE:  removeImage,
 	}
 	return cmd
 }
 
-func removeImage(cmd *cobra.Command, args []string) {
+func removeImage(cmd *cobra.Command, args []string) error {
 	rmImageCLI := cli.NewRemoveImageCLI()
-	cli.Run(rmImageCLI)
+	return cli.Run(rmImageCLI)
 }

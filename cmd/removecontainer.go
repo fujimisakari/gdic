@@ -10,12 +10,12 @@ func removeContainerCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "rmc",
 		Short: "Remove Docker Container",
-		Run:   removeContainer,
+		RunE:  removeContainer,
 	}
 	return cmd
 }
 
-func removeContainer(cmd *cobra.Command, args []string) {
+func removeContainer(cmd *cobra.Command, args []string) error {
 	rmContainerCLI := cli.NewRemoveContainerCLI()
-	cli.Run(rmContainerCLI)
+	return cli.Run(rmContainerCLI)
 }

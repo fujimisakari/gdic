@@ -14,6 +14,7 @@ var RootCmd = &cobra.Command{
 func init() {
 	cobra.OnInitialize()
 	RootCmd.AddCommand(
+		execContainerCmd(),
 		removeContainerCmd(),
 		removeImageCmd(),
 	)

@@ -15,7 +15,7 @@ func Run(cli CLI) error {
 		if err != nil {
 			return errors.Wrap(err, "Stdin Pipe Error")
 		}
-		io.WriteString(stdin, cli.GetRowsAsString())
+		io.WriteString(stdin, "exit\n"+cli.GetRowsAsString())
 		stdin.Close()
 
 		out, err := cmd.Output()
@@ -23,14 +23,22 @@ func Run(cli CLI) error {
 			return errors.Wrap(err, "Cmd Output Error")
 		}
 		row := string(out)
-		if row == "" || cli.IsExitCLI(row) {
+		if row == "" || row == "exit\n" {
 			break
 		}
 
-		id := cli.PickUpID(row)
-		cli.UpdateRows(id)
-		go cli.Exec(id)
+		cli.SetID(row)
+		cli.UpdateRows()
+		go cli.Exec()
+
+		if cli.isOnceCLI() {
+			break
+		}
 	}
-	fmt.Println("done")
+
+	if out := cli.Output(); out != "" {
+		fmt.Println(out)
+	}
+
 	return nil
 }

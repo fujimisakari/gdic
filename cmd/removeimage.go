@@ -16,6 +16,9 @@ func removeImageCmd() *cobra.Command {
 }
 
 func removeImage(cmd *cobra.Command, args []string) error {
-	rmImageCLI := cli.NewRemoveImageCLI()
+	rmImageCLI, err := cli.NewRemoveImageCLI()
+	if err != nil {
+		return err
+	}
 	return cli.Run(rmImageCLI)
 }

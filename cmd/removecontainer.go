@@ -16,6 +16,9 @@ func removeContainerCmd() *cobra.Command {
 }
 
 func removeContainer(cmd *cobra.Command, args []string) error {
-	rmContainerCLI := cli.NewRemoveContainerCLI()
+	rmContainerCLI, err := cli.NewRemoveContainerCLI()
+	if err != nil {
+		return err
+	}
 	return cli.Run(rmContainerCLI)
 }

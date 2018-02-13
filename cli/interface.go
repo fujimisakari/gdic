@@ -1,9 +1,10 @@
 package cli
 
 type CLI interface {
+	SetID(row string)
 	GetRowsAsString() string
-	Exec(id string) error
-	PickUpID(row string) string
-	UpdateRows(id string)
-	IsExitCLI(row string) bool
+	UpdateRows()
+	Exec() error
+	Output() string
+	isOnceCLI() bool
 }

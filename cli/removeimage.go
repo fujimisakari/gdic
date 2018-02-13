@@ -2,26 +2,34 @@ package cli
 
 import (
 	"bufio"
-	"fmt"
-	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 type RemoveImageCLI struct {
+	id   string
 	rows []string
 }
 
+func (c *RemoveImageCLI) SetID(row string) {
+	c.id = c.pickUpID(row)
+}
+
 func (c *RemoveImageCLI) GetRowsAsString() string {
-	return "exit\n" + strings.Join(c.rows, "\n")
+	return strings.Join(c.rows, "\n")
 }
 
-func (c *RemoveImageCLI) Exec(id string) error {
-	return exec.Command("docker", "rmi", id).Run()
-}
-
-func (c *RemoveImageCLI) PickUpID(row string) string {
-	return c.pickUpID(row)
+func (c *RemoveImageCLI) UpdateRows() {
+	newRows := []string{}
+	for i := range c.rows {
+		id := c.pickUpID(c.rows[i])
+		if c.id != id {
+			newRows = append(newRows, c.rows[i])
+		}
+	}
+	c.rows = newRows
 }
 
 func (c *RemoveImageCLI) pickUpID(row string) string {
@@ -29,35 +37,28 @@ func (c *RemoveImageCLI) pickUpID(row string) string {
 	return r[2]
 }
 
-func (c *RemoveImageCLI) UpdateRows(id string) {
-	newRows := []string{}
-	for i := range c.rows {
-		_id := c.pickUpID(c.rows[i])
-		if id != _id {
-			newRows = append(newRows, c.rows[i])
-		}
-	}
-	c.rows = newRows
+func (c *RemoveImageCLI) Exec() error {
+	return exec.Command("docker", "rmi", c.id).Run()
 }
 
-func (c *RemoveImageCLI) IsExitCLI(row string) bool {
-	if row == "exit\n" {
-		return true
-	}
+func (c *RemoveImageCLI) Output() string {
+	return ""
+}
+
+func (c *RemoveImageCLI) isOnceCLI() bool {
 	return false
 }
 
-func NewRemoveImageCLI() *RemoveImageCLI {
+func NewRemoveImageCLI() (*RemoveImageCLI, error) {
 	cmd := exec.Command("docker", "images")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return nil, errors.Wrap(err, "NewRemoveImageCLI Error")
 	}
-	cmd.Start()
 
 	var i uint64
 	rows := []string{}
+	cmd.Start()
 	scanner := bufio.NewScanner(stdout)
 	for scanner.Scan() {
 		if i == 0 {
@@ -67,5 +68,5 @@ func NewRemoveImageCLI() *RemoveImageCLI {
 		rows = append(rows, scanner.Text())
 	}
 	cmd.Wait()
-	return &RemoveImageCLI{rows}
+	return &RemoveImageCLI{rows: rows}, nil
 }

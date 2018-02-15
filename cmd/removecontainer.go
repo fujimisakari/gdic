@@ -8,7 +8,7 @@ import (
 
 func removeContainerCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "rmc",
+		Use:   "rm",
 		Short: "Remove Docker Container",
 		RunE:  removeContainer,
 	}

@@ -15,6 +15,7 @@ func init() {
 	cobra.OnInitialize()
 	RootCmd.AddCommand(
 		execContainerCmd(),
+		stopContainerCmd(),
 		removeContainerCmd(),
 		removeImageCmd(),
 	)

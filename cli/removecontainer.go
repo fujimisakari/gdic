@@ -53,7 +53,7 @@ func NewRemoveContainerCLI() (*RemoveContainerCLI, error) {
 	cmd := exec.Command("docker", "ps", "-a")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return nil, errors.Wrap(err, "NewExecContainerCLI Error")
+		return nil, errors.Wrap(err, "NewRemoveContainerCLI Error")
 	}
 
 	var i uint64

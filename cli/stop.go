@@ -8,20 +8,20 @@ import (
 	"github.com/pkg/errors"
 )
 
-type StopContainerCLI struct {
+type StopCLI struct {
 	id   string
 	rows []string
 }
 
-func (c *StopContainerCLI) SetID(row string) {
+func (c *StopCLI) SetID(row string) {
 	c.id = c.pickUpID(row)
 }
 
-func (c *StopContainerCLI) GetRowsAsString() string {
+func (c *StopCLI) GetRowsAsString() string {
 	return strings.Join(c.rows, "\n")
 }
 
-func (c *StopContainerCLI) UpdateRows() {
+func (c *StopCLI) UpdateRows() {
 	newRows := []string{}
 	for i := range c.rows {
 		id := c.pickUpID(c.rows[i])
@@ -32,28 +32,28 @@ func (c *StopContainerCLI) UpdateRows() {
 	c.rows = newRows
 }
 
-func (c *StopContainerCLI) pickUpID(row string) string {
+func (c *StopCLI) pickUpID(row string) string {
 	r := strings.Fields(row)
 	return r[0]
 }
 
-func (c *StopContainerCLI) Exec() error {
+func (c *StopCLI) Exec() error {
 	return exec.Command("docker", "stop", c.id).Run()
 }
 
-func (c *StopContainerCLI) Output() string {
+func (c *StopCLI) Output() string {
 	return ""
 }
 
-func (c *StopContainerCLI) isOnceCLI() bool {
+func (c *StopCLI) isOnceCLI() bool {
 	return false
 }
 
-func NewStopContainerCLI() (*StopContainerCLI, error) {
+func NewStopCLI() (*StopCLI, error) {
 	cmd := exec.Command("docker", "ps", "-a")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return nil, errors.Wrap(err, "NewStopContainerCLI Error")
+		return nil, errors.Wrap(err, "NewStopCLI Error")
 	}
 
 	var i uint64
@@ -68,5 +68,5 @@ func NewStopContainerCLI() (*StopContainerCLI, error) {
 		rows = append(rows, scanner.Text())
 	}
 	cmd.Wait()
-	return &StopContainerCLI{rows: rows}, nil
+	return &StopCLI{rows: rows}, nil
 }

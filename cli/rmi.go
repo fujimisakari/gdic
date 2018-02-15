@@ -8,20 +8,20 @@ import (
 	"github.com/pkg/errors"
 )
 
-type RemoveImageCLI struct {
+type RmiCLI struct {
 	id   string
 	rows []string
 }
 
-func (c *RemoveImageCLI) SetID(row string) {
+func (c *RmiCLI) SetID(row string) {
 	c.id = c.pickUpID(row)
 }
 
-func (c *RemoveImageCLI) GetRowsAsString() string {
+func (c *RmiCLI) GetRowsAsString() string {
 	return strings.Join(c.rows, "\n")
 }
 
-func (c *RemoveImageCLI) UpdateRows() {
+func (c *RmiCLI) UpdateRows() {
 	newRows := []string{}
 	for i := range c.rows {
 		id := c.pickUpID(c.rows[i])
@@ -32,28 +32,28 @@ func (c *RemoveImageCLI) UpdateRows() {
 	c.rows = newRows
 }
 
-func (c *RemoveImageCLI) pickUpID(row string) string {
+func (c *RmiCLI) pickUpID(row string) string {
 	r := strings.Fields(row)
 	return r[2]
 }
 
-func (c *RemoveImageCLI) Exec() error {
+func (c *RmiCLI) Exec() error {
 	return exec.Command("docker", "rmi", c.id).Run()
 }
 
-func (c *RemoveImageCLI) Output() string {
+func (c *RmiCLI) Output() string {
 	return ""
 }
 
-func (c *RemoveImageCLI) isOnceCLI() bool {
+func (c *RmiCLI) isOnceCLI() bool {
 	return false
 }
 
-func NewRemoveImageCLI() (*RemoveImageCLI, error) {
+func NewRmiCLI() (*RmiCLI, error) {
 	cmd := exec.Command("docker", "images")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return nil, errors.Wrap(err, "NewRemoveImageCLI Error")
+		return nil, errors.Wrap(err, "NewRmiCLI Error")
 	}
 
 	var i uint64
@@ -68,5 +68,5 @@ func NewRemoveImageCLI() (*RemoveImageCLI, error) {
 		rows = append(rows, scanner.Text())
 	}
 	cmd.Wait()
-	return &RemoveImageCLI{rows: rows}, nil
+	return &RmiCLI{rows: rows}, nil
 }

@@ -6,19 +6,19 @@ import (
 	"github.com/fujimisakari/gdic/cli"
 )
 
-func stopContainerCmd() *cobra.Command {
+func stopCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "stop",
 		Short: "Stop Docker Container",
-		RunE:  stopContainer,
+		RunE:  stop,
 	}
 	return cmd
 }
 
-func stopContainer(cmd *cobra.Command, args []string) error {
-	stopContainerCLI, err := cli.NewStopContainerCLI()
+func stop(cmd *cobra.Command, args []string) error {
+	stopCLI, err := cli.NewStopCLI()
 	if err != nil {
 		return err
 	}
-	return cli.Run(stopContainerCLI)
+	return cli.Run(stopCLI)
 }

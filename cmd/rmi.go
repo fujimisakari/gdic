@@ -6,19 +6,19 @@ import (
 	"github.com/fujimisakari/gdic/cli"
 )
 
-func removeImageCmd() *cobra.Command {
+func rmiCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "rmi",
 		Short: "Remove Docker Image",
-		RunE:  removeImage,
+		RunE:  rmi,
 	}
 	return cmd
 }
 
-func removeImage(cmd *cobra.Command, args []string) error {
-	rmImageCLI, err := cli.NewRemoveImageCLI()
+func rmi(cmd *cobra.Command, args []string) error {
+	rmiCLI, err := cli.NewRmiCLI()
 	if err != nil {
 		return err
 	}
-	return cli.Run(rmImageCLI)
+	return cli.Run(rmiCLI)
 }

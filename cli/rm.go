@@ -8,20 +8,20 @@ import (
 	"github.com/pkg/errors"
 )
 
-type RemoveContainerCLI struct {
+type RmCLI struct {
 	id   string
 	rows []string
 }
 
-func (c *RemoveContainerCLI) SetID(row string) {
+func (c *RmCLI) SetID(row string) {
 	c.id = c.pickUpID(row)
 }
 
-func (c *RemoveContainerCLI) GetRowsAsString() string {
+func (c *RmCLI) GetRowsAsString() string {
 	return strings.Join(c.rows, "\n")
 }
 
-func (c *RemoveContainerCLI) UpdateRows() {
+func (c *RmCLI) UpdateRows() {
 	newRows := []string{}
 	for i := range c.rows {
 		id := c.pickUpID(c.rows[i])
@@ -32,28 +32,28 @@ func (c *RemoveContainerCLI) UpdateRows() {
 	c.rows = newRows
 }
 
-func (c *RemoveContainerCLI) pickUpID(row string) string {
+func (c *RmCLI) pickUpID(row string) string {
 	r := strings.Fields(row)
 	return r[0]
 }
 
-func (c *RemoveContainerCLI) Exec() error {
+func (c *RmCLI) Exec() error {
 	return exec.Command("docker", "rm", c.id).Run()
 }
 
-func (c *RemoveContainerCLI) Output() string {
+func (c *RmCLI) Output() string {
 	return ""
 }
 
-func (c *RemoveContainerCLI) isOnceCLI() bool {
+func (c *RmCLI) isOnceCLI() bool {
 	return false
 }
 
-func NewRemoveContainerCLI() (*RemoveContainerCLI, error) {
+func NewRmCLI() (*RmCLI, error) {
 	cmd := exec.Command("docker", "ps", "-a")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return nil, errors.Wrap(err, "NewRemoveContainerCLI Error")
+		return nil, errors.Wrap(err, "NewRmCLI Error")
 	}
 
 	var i uint64
@@ -68,5 +68,5 @@ func NewRemoveContainerCLI() (*RemoveContainerCLI, error) {
 		rows = append(rows, scanner.Text())
 	}
 	cmd.Wait()
-	return &RemoveContainerCLI{rows: rows}, nil
+	return &RmCLI{rows: rows}, nil
 }

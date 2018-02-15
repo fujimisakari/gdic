@@ -8,7 +8,7 @@ import (
 
 func execContainerCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "exc",
+		Use:   "ex",
 		Short: "Exec Docker Container",
 		RunE:  execContainer,
 	}

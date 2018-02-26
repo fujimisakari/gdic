@@ -25,7 +25,7 @@ func TestRmiCLISetID(t *testing.T) {
 	execCLI := newRmiCLI()
 	execCLI.SetID(execCLI.rows[0])
 	actual := execCLI.id
-	expected := "7d83a47ab2d2"
+	expected := "mysql"
 	if actual != expected {
 		t.Error("Invalid operation: %#v == %#v", expected, actual)
 	}

@@ -34,7 +34,7 @@ func (c *RmiCLI) UpdateRows() {
 
 func (c *RmiCLI) pickUpID(row string) string {
 	r := strings.Fields(row)
-	return r[2]
+	return r[0]
 }
 
 func (c *RmiCLI) Exec() error {

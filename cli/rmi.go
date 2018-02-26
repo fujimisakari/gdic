@@ -34,6 +34,9 @@ func (c *RmiCLI) UpdateRows() {
 
 func (c *RmiCLI) pickUpID(row string) string {
 	r := strings.Fields(row)
+	if "<none>" == r[0] {
+		return r[2]
+	}
 	return r[0]
 }
 

@@ -42,7 +42,7 @@ func (c *ExecCLI) isOnceCLI() bool {
 }
 
 func NewExecCLI() (*ExecCLI, error) {
-	cmd := exec.Command("docker", "ps", "-a")
+	cmd := exec.Command("docker", "ps")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return nil, errors.Wrap(err, "NewExecCLI Error")

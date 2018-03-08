@@ -50,7 +50,7 @@ func (c *StopCLI) isOnceCLI() bool {
 }
 
 func NewStopCLI() (*StopCLI, error) {
-	cmd := exec.Command("docker", "ps", "-a")
+	cmd := exec.Command("docker", "ps")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return nil, errors.Wrap(err, "NewStopCLI Error")

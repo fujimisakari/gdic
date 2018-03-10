@@ -26,8 +26,8 @@ func (c *ExecCLI) GetRowsAsString() string {
 
 func (c *ExecCLI) UpdateRows() {}
 
-func (c *ExecCLI) Exec() error {
-	return nil
+func (c *ExecCLI) Exec() string {
+	return ""
 }
 
 func (c *ExecCLI) Output() string {

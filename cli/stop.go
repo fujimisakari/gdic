@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bufio"
+	"bytes"
 	"os/exec"
 	"strings"
 
@@ -37,8 +38,12 @@ func (c *StopCLI) pickUpID(row string) string {
 	return r[0]
 }
 
-func (c *StopCLI) Exec() error {
-	return exec.Command("docker", "stop", c.id).Run()
+func (c *StopCLI) Exec() string {
+	var stderr bytes.Buffer
+	cmd := exec.Command("docker", "stop", c.id)
+	cmd.Stderr = &stderr
+	cmd.Run()
+	return stderr.String()
 }
 
 func (c *StopCLI) Output() string {

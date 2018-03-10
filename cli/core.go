@@ -9,13 +9,20 @@ import (
 )
 
 func Run(cli CLI) error {
+	var stdErr string
+
 	for {
 		cmd := exec.Command("peco")
 		stdin, err := cmd.StdinPipe()
 		if err != nil {
 			return errors.Wrap(err, "Stdin Pipe Error")
 		}
-		io.WriteString(stdin, "exit\n"+cli.GetRowsAsString())
+		if stdErr != "" {
+			io.WriteString(stdin, "back\n"+stdErr)
+			stdErr = ""
+		} else {
+			io.WriteString(stdin, "exit\n"+cli.GetRowsAsString())
+		}
 		stdin.Close()
 
 		out, err := cmd.Output()
@@ -25,11 +32,16 @@ func Run(cli CLI) error {
 		row := string(out)
 		if row == "" || row == "exit\n" {
 			break
+		} else if row == "back\n" {
+			continue
 		}
 
 		cli.SetID(row)
-		cli.UpdateRows()
-		go cli.Exec()
+		if err := cli.Exec(); err != "" {
+			stdErr = err
+		} else {
+			cli.UpdateRows()
+		}
 
 		if cli.isOnceCLI() {
 			break

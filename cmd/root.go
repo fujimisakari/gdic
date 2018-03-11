@@ -5,8 +5,8 @@ import (
 )
 
 var RootCmd = &cobra.Command{
-	Use:           "docker-increment-cli",
-	Short:         "docker increment cli Tool",
+	Use:           "gdic",
+	Short:         "go docker incremental cli",
 	SilenceErrors: true,
 	SilenceUsage:  true,
 }
